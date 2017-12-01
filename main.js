@@ -1,4 +1,7 @@
+var filendir = require('filendir');
 var fs = require('fs');
+var ejs = require('ejs');
+require('amd-loader');
 
 var templates = require('./templates/Templates');
 
@@ -27,20 +30,41 @@ function print_usage(exit, code) {
     }
 }
 
+// Template handling code
+function generateProject(projectName, language) {
+    var lang = language || 'cpp';
+    var artifacts = {};
+
+    // make folder name
+    var prefix = projectName;
+
+    // select artifacts by language
+    var selectedArtifactKeys = Object.keys(templates).filter(function(key) { return key.startsWith(lang + '/'); });
+
+    // render all artifacts
+    selectedArtifactKeys.map(function(key) {
+	artifacts[key] = ejs.render( templates[key], {} );
+        // make filename
+        var fileName = prefix + '/' + key;
+        // now write all artifacts out
+        filendir.ws(fileName, artifacts[key]);
+        console.log('wrote: '+fileName);
+    });
+}
+
 // now the main code
-if (process.argv.length == 4) {
-    if (process.argv[2] == '--array') {
-        outputType = 'ARRAY';
-    }
-    else if (process.argv[2] == '--string') {
-        outputType = 'STRING';
+var projectName = 'BLEProject';
+var language = 'cpp';
+var artifacts = {};
+
+if (process.argv.length == 5) {
+    if (process.argv[2] == '--language') {
+        language = process.argv[3];
+        projectName = process.argv[4];
     }
     else {
         print_usage(true, -1);
     }
-    
-    input = process.argv[3];
-    output = input + '.converted.json';
 }
 else if (process.argv.length == 3)
 {
@@ -48,11 +72,12 @@ else if (process.argv.length == 3)
         print_usage(true, 0);
     }
     else {
-        input = process.argv[2];
-        output = input + '.converted.json';
+        projectName = process.argv[2];
     }
 }
 else {
     console.error('Incorrect arguments!');
     print_usage(true, -1);
 }
+
+generateProject( projectName, language );

@@ -1,0 +1,28 @@
+{
+  "name": "ble113-generator",
+  "version": "1.0.0",
+  "description": "Generator for BLE113 project files.",
+  "main": "main.js",
+  "dependencies": {
+    "amd-loader": "0.0.8",
+    "ejs": "^2.5.7",
+    "filendir": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finger563/ble113-generator.git"
+  },
+  "keywords": [
+    "ble113"
+  ],
+  "author": "William Emfinger",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/finger563/ble113-generator/issues"
+  },
+  "homepage": "https://github.com/finger563/ble113-generator#readme"
+}

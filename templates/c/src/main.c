@@ -31,19 +31,8 @@
 #include <blestack/hw.h>
 #include <blestack/dma.h>
 
-#include "_generated_states_.h"
-
 void timer_update(uint8 context, uint8 event)
 {
-  changeState = 0;
-<%
-model.State_list.map(function(state) {
--%>
-  <%- state.stateName %>_execute();
-<%
-});
--%>
-
   task_timed_cancel_masked((enum task_id)task_id_timer_update, 0, 0, 0, 0);
   if (!changeState) {
     task_send_timed((enum task_id)task_id_timer_update, 0, 1, stateDelay);
@@ -84,15 +73,7 @@ void main(void)
 
     // initialize BLE stack
     blestack_init();
-    
 
-    // generated initialization code for the state machine:
-    changeState = 0;
-    stateDelay  = <%- parseInt(parseFloat(model.initState.timerPeriod) * 32768.0) %>;
-    // STATE::<%- model.initState.name %>
-    <%- model.initState.stateName %>_setState();
-    // execute the init transition for the chart (including user initialization code)
-<%- model.initFunc %>  
     // Start the state timer
     task_send_timed((enum task_id)task_id_timer_update, 0, 1, stateDelay);
     

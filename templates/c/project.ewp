@@ -3178,22 +3178,8 @@
   </configuration>
   <group>
     <name>APP</name>
-<%
-if (model.Library_list) {
-  model.Library_list.map(function(library) {
--%>
-    <file>
-      <name>$PROJ_DIR$\src\<%- library.name %>.c</name>
-    </file>
-<%
-  });
-}
--%>
     <file>
       <name>$PROJ_DIR$\src\main.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\src\_generated_states_.c</name>
     </file>
   </group>
   <group>
